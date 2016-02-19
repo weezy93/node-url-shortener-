@@ -10,6 +10,20 @@
     <h1>{{ title }}</h1>
     <p>Welcome to {{ title }}</p>
 
-  </div>
+	<br>
+		<a href="./about">About</a>
+	<br>
 
+		{% for student in array %}
+			<p>{{ student }}</p>
+		{% endfor %}
+
+	<br>
+
+	  <form method="post" action="/form">
+	  	<input type="text" name="url" autofocus placeholder="URL">
+	  	<button type="submit">Submit</button>
+	  </form>
+
+  </div>
 {% endblock %}

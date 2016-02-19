@@ -6,6 +6,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
+var http = require('http');
+var request = require('request');
 
 
 // *** express instance *** //
@@ -32,36 +34,40 @@ app.use(express.static(path.join(__dirname, '../client')));
 
 // *** main routes *** //
 app.get("/", function(req, res, next){
-  res.send("test");
+  res.render("./index", {title: "Galvanize", array: ["Rachel", "Dan", "Adam", "Kyle", "Jon"]});
 });
 
-// var http = require('http');
-// var request = require('request');
 
-// var urlToShorten = process.argv[2];
-// var key = 'AIzaSyCqECTvLEZ59tcGxZ--6Zr5FrwEf9TG1gg';
-// var url = 'https://www.googleapis.com/urlshortener/v1/url?key=' + key;
+app.post("/form", function(req, res, next){
 
-// var options = {
-//   url: url,
-//   headers: {
-//     'Content-Type': 'application/json'
-//   },
-//   body: {longUrl: urlToShorten},
-//   json: true
-// };
+  var urlToShorten = req.body.url;
+  var key = 'AIzaSyCqECTvLEZ59tcGxZ--6Zr5FrwEf9TG1gg';
+  var url = 'https://www.googleapis.com/urlshortener/v1/url?key=' + key;
 
-// function requestHandler(req, res) {
-//   request.post(options, function(error, response) {
-//     if (error) {
-//       console.log(error);
-//       res.end('Something went wrong');
-//     } else {
-//       res.setHeader('Content-Type', 'application/json');
-//       res.end(JSON.stringify(response.body));
-//     }
-//   });
-// }
+  var options = {
+    url: url,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: {longUrl: urlToShorten},
+    json: true
+  };
+
+  request.post(options, function(error, response) {
+    if (error) {
+      console.log(error);
+      res.send('Something went wrong');
+
+    } else {
+      res.json(response.body;)
+    }
+  });
+});
+
+app.get("./about", function(req, res, next){
+  res.render("")
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
